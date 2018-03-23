@@ -1,6 +1,5 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -19,7 +18,7 @@ public class ServerLogic extends JFrame implements Runnable{
 	ObjectInputStream input;
 	ObjectOutputStream output;
 	
-	int mustFPS = 10000;
+	int mustFPS = 60;
 	int mustTimer = 1000/mustFPS;
 	int st;
 	int timer;
