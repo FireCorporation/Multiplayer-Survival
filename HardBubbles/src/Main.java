@@ -8,13 +8,15 @@ public class Main {
 		f = new JFrame("HardBubbles");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLocationRelativeTo(null);
-		f.setLocation(f.getLocation().x-gp.WIDTH/2, f.getLocation().y-gp.HEIGHT/2);
-		f.setSize(gp.WIDTH, gp.HEIGHT);
+		f.setLocation(f.getLocation().x-GamePanel.WIDTH/2, f.getLocation().y-GamePanel.HEIGHT/2);
+		f.setSize(GamePanel.WIDTH, GamePanel.HEIGHT);
 		f.setResizable(false);
 		f.setVisible(true);
 		
 		f.setContentPane(gp);
 		
+		gp.setFocusable(true);
+		gp.requestFocus();
 		gp.t.start();
 		}
 }
