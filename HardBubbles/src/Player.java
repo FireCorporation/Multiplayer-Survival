@@ -3,9 +3,9 @@ import java.awt.Graphics2D;
 
 public class Player {
 	
-	double x;
-	double y;
-	int speed;
+	static double x;
+	static double y;
+	double speed;
 	int r;
 	int rSpeed;
 	
@@ -30,11 +30,11 @@ public class Player {
 		left = false;
 	}
 	
-	void update() {
-		try{speed = rSpeed*(GamePanel.mustFPS/GamePanel.FPS);}catch(Exception e){}
+	void move() {
+		try{speed = rSpeed*((double)GamePanel.mustFPS/GamePanel.FPS);}catch(Exception e){}
 		
-		int dx = 0;
-		int dy = 0;
+		double dx = 0;
+		double dy = 0;
 		
 		if(up)
 			dy = -speed;
@@ -45,13 +45,13 @@ public class Player {
 		if(left)
 			dx = -speed;
 		
-		if(left && x <= 0)
+		if(left && x-r <= 0)
 			dx = 0;
-		if(right && x >= GamePanel.WIDTH-r*3)
+		if(right && x+r*2 >= GamePanel.WIDTH)
 			dx = 0;
-		if(up && y <= 0)
+		if(up && y-r <= 0)
 			dy = 0;
-		if(down && y >= GamePanel.HEIGHT-r*8)
+		if(down && y+r*7 >= GamePanel.HEIGHT)
 			dy = 0;
 		
 		if((up && right) || (up && left) || (down && right) || (down && left)) {
@@ -64,8 +64,18 @@ public class Player {
 		y += dy;
 	}
 	
+	void fire() {
+		if(fire)
+			GamePanel.b.add(new Bullet());
+	}
+	
+	void update() {
+		move();
+		fire();
+	}
+	
 	void draw(Graphics2D g) {
 		g.setColor(new Color(255, 0, 100));
-		g.fillOval((int)x, (int)y, r*2, r*2);
+		g.fillOval((int)x-r, (int)y-r, r*2, r*2);
 	}
 }

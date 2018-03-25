@@ -7,7 +7,8 @@ import java.awt.event.MouseMotionListener;
 public class Listener implements KeyListener, MouseMotionListener, MouseListener {
 
 	public void mouseDragged(MouseEvent e) {
-		
+		GamePanel.mouseX = e.getX();
+		GamePanel.mouseY = e.getY();
 	}
 
 	public void mouseMoved(MouseEvent e) {

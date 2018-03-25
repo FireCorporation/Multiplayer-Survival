@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -20,13 +21,14 @@ public class GamePanel extends JPanel implements Runnable{
 	static int mouseX;
 	static int mouseY;
 	
+	static ArrayList<Bullet> b;
+	
 	Background bg;
 	Player p;
 	
 	Thread t;
 	
 	public GamePanel() {
-		
 		bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = (Graphics2D)bi.getGraphics();
 		
@@ -40,6 +42,8 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		mouseX = 0;
 		mouseY = 0;
+		
+		b = new ArrayList<Bullet>();
 		
 		bg = new Background();
 		p = new Player();
@@ -60,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
 				FPS = mustFPS;
 			} else {
 				st = 0;
-				FPS = ((int)System.currentTimeMillis()-timer-mustFPS)/mustFPS;
+				FPS = mustFPS/(((int)System.currentTimeMillis()-timer)/mustTimer);
 			}
 			try{Thread.sleep(st);}catch(Exception e){}
 		}
@@ -68,11 +72,17 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	void update() {
 		p.update();
+		
+		for(int i = 0; i < b.size(); i++)
+			b.get(i).update(i);
 	}
 	
 	void draw() {
 		bg.draw(g);
 		p.draw(g);
+		
+		for(int i = 0; i < b.size(); i++)
+			b.get(i).draw(g);
 		
 		g.setFont(new Font("Cursive", Font.BOLD, 10));
 		g.setColor(new Color(0, 0, 0));
