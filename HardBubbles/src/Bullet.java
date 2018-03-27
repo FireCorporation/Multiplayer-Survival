@@ -5,8 +5,6 @@ public class Bullet {
 	
 	double x;
 	double y;
-	double dx;
-	double dy;
 	int r;
 	double rdx;
 	double rdy;
@@ -15,9 +13,6 @@ public class Bullet {
 	public Bullet() {
 		x = Player.x;
 		y = Player.y;
-		
-		dx = 0;
-		dy = 0;
 		
 		r = 2;
 		
@@ -32,6 +27,8 @@ public class Bullet {
 	}
 	
 	void move() {
+		double dx = 0;
+		double dy = 0;
 		try{
 			dx = rdx*((double)GamePanel.mustFPS/GamePanel.FPS);
 			dy = rdy*((double)GamePanel.mustFPS/GamePanel.FPS);

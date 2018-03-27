@@ -22,7 +22,9 @@ public class GamePanel extends JPanel implements Runnable{
 	static int mouseY;
 	
 	static ArrayList<Bullet> b;
+	static ArrayList<Enemy> en;
 	
+	Waves w;
 	Background bg;
 	Player p;
 	
@@ -38,13 +40,15 @@ public class GamePanel extends JPanel implements Runnable{
 		addMouseListener(l);
 		
 		mustFPS = 60;
-		FPS = 0;
+		FPS = 1;
 		
 		mouseX = 0;
 		mouseY = 0;
 		
 		b = new ArrayList<Bullet>();
+		en = new ArrayList<Enemy>();
 		
+		w = new Waves();
 		bg = new Background();
 		p = new Player();
 		
@@ -71,10 +75,14 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	void update() {
+		w.update();
 		p.update();
-		
+
 		for(int i = 0; i < b.size(); i++)
 			b.get(i).update(i);
+		
+		for(int i = 0; i < en.size(); i++)
+			en.get(i).update(i);
 	}
 	
 	void draw() {
@@ -83,6 +91,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		for(int i = 0; i < b.size(); i++)
 			b.get(i).draw(g);
+
+		for(int i = 0; i < en.size(); i++)
+			en.get(i).draw(g);
 		
 		g.setFont(new Font("Cursive", Font.BOLD, 10));
 		g.setColor(new Color(0, 0, 0));

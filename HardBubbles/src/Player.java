@@ -5,7 +5,6 @@ public class Player {
 	
 	static double x;
 	static double y;
-	double speed;
 	int r;
 	int rSpeed;
 	
@@ -31,6 +30,7 @@ public class Player {
 	}
 	
 	void move() {
+		double speed = 0;
 		try{speed = rSpeed*((double)GamePanel.mustFPS/GamePanel.FPS);}catch(Exception e){}
 		
 		double dx = 0;
@@ -69,9 +69,14 @@ public class Player {
 			GamePanel.b.add(new Bullet());
 	}
 	
+	void destroy() {
+		
+	}
+	
 	void update() {
 		move();
 		fire();
+		destroy();
 	}
 	
 	void draw(Graphics2D g) {
