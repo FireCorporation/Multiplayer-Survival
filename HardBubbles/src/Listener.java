@@ -49,7 +49,7 @@ public class Listener implements KeyListener, MouseMotionListener, MouseListener
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		
+		GamePanel.click = true;
 	}
 
 	public void mouseEntered(MouseEvent e) {

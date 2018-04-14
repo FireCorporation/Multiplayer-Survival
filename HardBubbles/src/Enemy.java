@@ -5,17 +5,18 @@ public class Enemy {
 	
 	double x;
 	double y;
-	double mass;
+	int mass;
+	double r;
 	double speed;
 	double rdx;
 	double rdy;
 	
-	public Enemy(double mass) {
+	public Enemy(int mass) {
 		this.mass = mass;
-		speed = 5/mass;
+		r = (int)Math.sqrt(mass*100/Math.PI);
+		speed = 20/r;
 		
 		int side = (int)Math.round(Math.random()*4-0.5);
-		int r = (int)Math.sqrt((mass*10/Math.PI)/(10/Math.PI))*5;
 		switch(side) {
 		case 0:
 			x = (int)(Math.random()*GamePanel.WIDTH);
@@ -35,7 +36,26 @@ public class Enemy {
 			break;
 		}
 		
-		cw();
+		rm();
+	}
+	
+	void rm() {
+		double angle = (int)Math.random()*359;
+		rdx = Math.cos(angle);
+		rdy = Math.sin(angle);
+	}
+	
+	public Enemy(int mass, double x, double y) {
+		this.mass = mass;
+		r = (int)Math.sqrt(mass*100/Math.PI);
+		speed = 20/r;
+		
+		this.x = x;
+		this.y = y;
+		
+		double angle = Math.toRadians(Math.random()*359);
+		rdx = Math.cos(angle)*speed;
+		rdy = Math.sin(angle)*speed;
 	}
 	
 	void cw() {
@@ -48,24 +68,19 @@ public class Enemy {
 	}
 	
 	boolean cww() {
-		int r = (int)Math.sqrt((mass*10/Math.PI)/(10/Math.PI))*5;
-		
-		if(x-r <= 0)
+		if(x-r <= 0 && rdx < 0)
 			return true;
-		if(x+r >= GamePanel.WIDTH)
+		if(x+r >= GamePanel.WIDTH && rdx > 0)
 			return true;
-		if(y-r <= 0)
+		if(y-r <= 0 && rdy < 0)
 			return true;
-		if(y+r*7 >= GamePanel.HEIGHT)
+		if(y+r >= GamePanel.HEIGHT && rdy > 0)
 			return true;
 		
 		return false;
 	}
 	
 	void move() {
-		if(cww())
-			cw();
-		
 		double dx = 0;
 		double dy = 0;
 		
@@ -73,9 +88,11 @@ public class Enemy {
 			dx = rdx*((double)GamePanel.mustFPS/GamePanel.FPS);
 			dy = rdy*((double)GamePanel.mustFPS/GamePanel.FPS);
 		}catch(Exception e){}
-		
 		x += dx;
 		y += dy;
+		
+		if(cww())
+			cw();
 	}
 	
 	boolean cwb(int index) {
@@ -83,7 +100,7 @@ public class Enemy {
 		double distY = y - GamePanel.b.get(index).y;
 		double dist = Math.sqrt(distX*distX + distY*distY);
 		
-		if(dist <= (int)Math.sqrt((mass*10/Math.PI)/(10/Math.PI))*5 + GamePanel.b.get(index).r)
+		if(dist <= r + GamePanel.b.get(index).r)
 			return true;
 		
 		return false;
@@ -93,7 +110,15 @@ public class Enemy {
 		for(int i = 0; i < GamePanel.b.size(); i++)
 			if(cwb(i)) {
 				GamePanel.b.remove(i);
-				GamePanel.en.remove(index);
+				try{
+					GamePanel.en.remove(index);
+					int MPW = mass-1;
+					for(int j = 0; j < MPW; j++) {
+						int ec = (int)Math.round((Math.random()*(MPW-1)+1));
+						MPW -= ec;
+						GamePanel.en.add(new Enemy(ec, x, y));
+					}
+				}catch(Exception e){}
 			}
 	}
 	
@@ -104,7 +129,6 @@ public class Enemy {
 	
 	void draw(Graphics2D g) {
 		g.setColor(new Color(0, 255, 0));
-		int r = (int)Math.sqrt((mass*10/Math.PI)/(10/Math.PI))*5;
 		g.fillOval((int)x-(int)r, (int)y-(int)r, (int)r*2, (int)r*2);
 	}
 }

@@ -15,18 +15,28 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	Listener l;
 	
+	enum Stat{
+		GAME,
+		MENU
+	}
+	
+	static Stat s;
+	
 	static int FPS;
 	static int mustFPS;
 	
 	static int mouseX;
 	static int mouseY;
+	static boolean click;
 	
 	static ArrayList<Bullet> b;
 	static ArrayList<Enemy> en;
 	
+	Menu menu;
+	
 	Waves w;
 	Background bg;
-	Player p;
+	static Player p;
 	
 	Thread t;
 	
@@ -39,6 +49,8 @@ public class GamePanel extends JPanel implements Runnable{
 		addMouseMotionListener(l);
 		addMouseListener(l);
 		
+		s = Stat.MENU;
+		
 		mustFPS = 60;
 		FPS = 1;
 		
@@ -47,6 +59,8 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		b = new ArrayList<Bullet>();
 		en = new ArrayList<Enemy>();
+		
+		menu = new Menu();
 		
 		w = new Waves();
 		bg = new Background();
@@ -60,15 +74,29 @@ public class GamePanel extends JPanel implements Runnable{
 		int st;
 		while(true) {
 			int timer = (int)System.currentTimeMillis();
-			update();
-			draw();
-			display();
+			if(s.equals(Stat.GAME)) {
+				update();
+				draw();
+				display();
+			} else if(s.equals(Stat.MENU)) {
+				bg.draw(g);
+				menu.update();
+				menu.draw(g);
+				g.setFont(new Font("Cursive", Font.BOLD, 10));
+				g.setColor(new Color(0, 0, 0));
+				g.drawString("FPS: "+FPS, 5, GamePanel.HEIGHT-5);
+				display();
+			}
 			if((int)System.currentTimeMillis()-timer<=mustTimer) {
 				st = mustTimer-((int)System.currentTimeMillis()-timer);
 				FPS = mustFPS;
+				if(FPS == 0)
+					FPS = 1;
 			} else {
 				st = 0;
 				FPS = mustFPS/(((int)System.currentTimeMillis()-timer)/mustTimer);
+				if(FPS == 0)
+					FPS = 1;
 			}
 			try{Thread.sleep(st);}catch(Exception e){}
 		}
@@ -97,7 +125,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		g.setFont(new Font("Cursive", Font.BOLD, 10));
 		g.setColor(new Color(0, 0, 0));
-		g.drawString("FPS: "+FPS, 5, GamePanel.HEIGHT-35);
+		g.drawString("FPS: "+FPS, 5, GamePanel.HEIGHT-5);
 	}
 	
 	void display() {

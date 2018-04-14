@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 public class Player {
 	
@@ -47,11 +48,11 @@ public class Player {
 		
 		if(left && x-r <= 0)
 			dx = 0;
-		if(right && x+r*2 >= GamePanel.WIDTH)
+		if(right && x+r >= GamePanel.WIDTH)
 			dx = 0;
 		if(up && y-r <= 0)
 			dy = 0;
-		if(down && y+r*7 >= GamePanel.HEIGHT)
+		if(down && y+r >= GamePanel.HEIGHT)
 			dy = 0;
 		
 		if((up && right) || (up && left) || (down && right) || (down && left)) {
@@ -70,7 +71,23 @@ public class Player {
 	}
 	
 	void destroy() {
-		
+		for(int i = 0; i < GamePanel.en.size(); i++) {
+			double ex = GamePanel.en.get(i).x;
+			double ey = GamePanel.en.get(i).y;
+			double er = GamePanel.en.get(i).r;
+			
+			double distX = ex-x;
+			double distY = ey-y;
+			double dist = Math.sqrt(distX*distX + distY*distY);
+			
+			if(dist <= er+r) {
+				GamePanel.s = GamePanel.Stat.MENU;
+				GamePanel.b = new ArrayList<Bullet>();
+				GamePanel.en = new ArrayList<Enemy>();
+				Waves.wave = 1;
+				GamePanel.p = new Player();
+			}
+		}
 	}
 	
 	void update() {

@@ -1,10 +1,10 @@
 
 public class Waves {
 	
-	int wave;
+	static int wave;
 	
 	public Waves() {
-		wave = 0;
+		wave = 1;
 	}
 	
 	void update() {
@@ -12,10 +12,11 @@ public class Waves {
 			return;
 		wave++;
 		int MPW = wave*wave;
-		int ec = (int)Math.round((Math.random()*(MPW-1)+1));
-		int mfe = MPW/ec;
 		
-		for(int i = 0; i < ec; i++)
-			GamePanel.en.add(new Enemy(mfe));
+		for(int i = 0; i < MPW; i++) {
+			int ec = (int)Math.round((Math.random()*(MPW-1)+1));
+			MPW -= ec;
+			GamePanel.en.add(new Enemy(ec));
+		}
 	}
 }
