@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -8,6 +9,10 @@ public class Player {
 	static double y;
 	int r;
 	int rSpeed;
+	int charge;
+	int ttc;
+	
+	String scharge;
 	
 	static boolean fire;
 	static boolean up;
@@ -22,6 +27,11 @@ public class Player {
 		y = GamePanel.HEIGHT/2-r;
 		
 		rSpeed = 5;
+		
+		charge = 0;
+		ttc = 0;
+		
+		scharge = "ÇÀÐßÄ - ";
 		
 		fire = false;
 		up = false;
@@ -66,8 +76,10 @@ public class Player {
 	}
 	
 	void fire() {
-		if(fire)
+		if(fire && charge >= 1) {
+			charge--;
 			GamePanel.b.add(new Bullet());
+		}
 	}
 	
 	void destroy() {
@@ -81,17 +93,27 @@ public class Player {
 			double dist = Math.sqrt(distX*distX + distY*distY);
 			
 			if(dist <= er+r) {
+				if(GamePanel.ek > GamePanel.record)
+					GamePanel.record = GamePanel.ek;
+				Menu.score = GamePanel.ek;
 				GamePanel.s = GamePanel.Stat.MENU;
-				GamePanel.b = new ArrayList<Bullet>();
-				GamePanel.en = new ArrayList<Enemy>();
-				Waves.wave = 1;
-				GamePanel.p = new Player();
 			}
+		}
+	}
+	
+	void charge() {
+		int cs = 1000/Menu.charge.level;
+		int tcs = cs/(1000/GamePanel.FPS);
+		ttc++;
+		if(ttc >= tcs) {
+			ttc -= tcs;
+			charge++;
 		}
 	}
 	
 	void update() {
 		move();
+		charge();
 		fire();
 		destroy();
 	}
@@ -99,5 +121,9 @@ public class Player {
 	void draw(Graphics2D g) {
 		g.setColor(new Color(255, 0, 100));
 		g.fillOval((int)x-r, (int)y-r, r*2, r*2);
+		g.setFont(new Font("Consolas", Font.BOLD, 15));
+		g.setColor(new Color(255, 255, 255));
+		int length = (int)g.getFontMetrics().getStringBounds(scharge+charge, g).getWidth();
+		g.drawString(scharge+charge, GamePanel.WIDTH-length-5, GamePanel.HEIGHT-5);
 	}
 }

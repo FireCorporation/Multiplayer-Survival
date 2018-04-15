@@ -22,6 +22,9 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	static Stat s;
 	
+	static int ek;
+	static int record;
+	
 	static int FPS;
 	static int mustFPS;
 	
@@ -51,6 +54,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		s = Stat.MENU;
 		
+		ek = 0;
+		record = 0;
+		
 		mustFPS = 60;
 		FPS = 1;
 		
@@ -64,7 +70,6 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		w = new Waves();
 		bg = new Background();
-		p = new Player();
 		
 		t = new Thread(this);
 	}
@@ -81,10 +86,9 @@ public class GamePanel extends JPanel implements Runnable{
 			} else if(s.equals(Stat.MENU)) {
 				bg.draw(g);
 				menu.update();
+				if(Menu.s.equals(Menu.Stat.MAIN))
+					draw();
 				menu.draw(g);
-				g.setFont(new Font("Cursive", Font.BOLD, 10));
-				g.setColor(new Color(0, 0, 0));
-				g.drawString("FPS: "+FPS, 5, GamePanel.HEIGHT-5);
 				display();
 			}
 			if((int)System.currentTimeMillis()-timer<=mustTimer) {
@@ -115,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	void draw() {
 		bg.draw(g);
-		p.draw(g);
+		try{p.draw(g);}catch(Exception e){}
 		
 		for(int i = 0; i < b.size(); i++)
 			b.get(i).draw(g);

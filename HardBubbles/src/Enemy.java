@@ -35,14 +35,6 @@ public class Enemy {
 			x = 0 - r;
 			break;
 		}
-		
-		rm();
-	}
-	
-	void rm() {
-		double angle = (int)Math.random()*359;
-		rdx = Math.cos(angle);
-		rdy = Math.sin(angle);
 	}
 	
 	public Enemy(int mass, double x, double y) {
@@ -68,19 +60,22 @@ public class Enemy {
 	}
 	
 	boolean cww() {
-		if(x-r <= 0 && rdx < 0)
+		if(x-r <= 0 && rdx <= 0)
 			return true;
-		if(x+r >= GamePanel.WIDTH && rdx > 0)
+		if(x+r >= GamePanel.WIDTH && rdx >= 0)
 			return true;
-		if(y-r <= 0 && rdy < 0)
+		if(y-r <= 0 && rdy <= 0)
 			return true;
-		if(y+r >= GamePanel.HEIGHT && rdy > 0)
+		if(y+r >= GamePanel.HEIGHT && rdy >= 0)
 			return true;
 		
 		return false;
 	}
 	
 	void move() {
+		if(cww())
+			cw();
+		
 		double dx = 0;
 		double dy = 0;
 		
@@ -90,9 +85,6 @@ public class Enemy {
 		}catch(Exception e){}
 		x += dx;
 		y += dy;
-		
-		if(cww())
-			cw();
 	}
 	
 	boolean cwb(int index) {
@@ -112,8 +104,9 @@ public class Enemy {
 				GamePanel.b.remove(i);
 				try{
 					GamePanel.en.remove(index);
+					GamePanel.ek++;
 					int MPW = mass-1;
-					for(int j = 0; j < MPW; j++) {
+					while(MPW > 0) {
 						int ec = (int)Math.round((Math.random()*(MPW-1)+1));
 						MPW -= ec;
 						GamePanel.en.add(new Enemy(ec, x, y));
