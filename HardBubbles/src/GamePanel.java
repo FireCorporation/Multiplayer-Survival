@@ -72,6 +72,9 @@ public class GamePanel extends JPanel implements Runnable{
 		bg = new Background();
 		
 		t = new Thread(this);
+		
+		Save.load();
+		Menu.score = 1000;
 	}
 	
 	public void run() {

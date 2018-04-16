@@ -31,7 +31,7 @@ public class Menu {
 		back = new Button("мюгюд", GamePanel.WIDTH/2, GamePanel.HEIGHT/1.125);
 		bosses = new Button("аняяш", GamePanel.WIDTH/2, GamePanel.HEIGHT/3);
 		
-		charge = new ShopButton("гюпъдйю", 40, GamePanel.WIDTH/4, GamePanel.HEIGHT/6);
+		charge = new ShopButton("гюпъдйю", 20, GamePanel.WIDTH/4, GamePanel.HEIGHT/6);
 		
 		ek = "люяяш пюяыхокемн - ";
 		record = "пейнпд - ";

@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 
 public class Player {
 	
@@ -96,6 +95,7 @@ public class Player {
 				if(GamePanel.ek > GamePanel.record)
 					GamePanel.record = GamePanel.ek;
 				Menu.score = GamePanel.ek;
+				Save.save();
 				GamePanel.s = GamePanel.Stat.MENU;
 			}
 		}
@@ -121,9 +121,12 @@ public class Player {
 	void draw(Graphics2D g) {
 		g.setColor(new Color(255, 0, 100));
 		g.fillOval((int)x-r, (int)y-r, r*2, r*2);
-		g.setFont(new Font("Consolas", Font.BOLD, 15));
-		g.setColor(new Color(255, 255, 255));
-		int length = (int)g.getFontMetrics().getStringBounds(scharge+charge, g).getWidth();
-		g.drawString(scharge+charge, GamePanel.WIDTH-length-5, GamePanel.HEIGHT-5);
+		
+		if(!GamePanel.s.equals(GamePanel.Stat.MENU)) {
+			g.setFont(new Font("Consolas", Font.BOLD, 15));
+			g.setColor(new Color(255, 255, 255));
+			int length = (int)g.getFontMetrics().getStringBounds(scharge+charge, g).getWidth();
+			g.drawString(scharge+charge, GamePanel.WIDTH-length-5, GamePanel.HEIGHT-5);
+		}
 	}
 }
