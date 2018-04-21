@@ -8,7 +8,11 @@ public class Menu {
 	enum Stat{
 		MAIN,
 		SHOP,
-		BOSSES
+		PLAY,
+		BOSSES,
+		ONLINE,
+		CONNECT,
+		HOST
 	}
 	
 	static Stat s;
@@ -17,6 +21,14 @@ public class Menu {
 	Button shop;
 	Button back;
 	Button bosses;
+	Button play;
+	Button online;
+	Button host;
+	Button connect;
+	Button hostok;
+	Button connectok;
+	
+	TextField hostp;
 	
 	static ShopButton charge;
 	
@@ -26,10 +38,18 @@ public class Menu {
 	public Menu() {
 		s = Stat.MAIN;
 		
-		swave = new Button("—“¿–“", GamePanel.WIDTH/2, GamePanel.HEIGHT/2);
+		play = new Button("»√–¿“‹", GamePanel.WIDTH/2, GamePanel.HEIGHT/2);
 		shop = new Button("Ã¿√¿«»Õ", GamePanel.WIDTH/2, GamePanel.HEIGHT/1.5);
 		back = new Button("Õ¿«¿ƒ", GamePanel.WIDTH/2, GamePanel.HEIGHT/1.125);
+		swave = new Button("¬ŒÀÕ€", GamePanel.WIDTH/2, GamePanel.HEIGHT/2);
 		bosses = new Button("¡Œ——€", GamePanel.WIDTH/2, GamePanel.HEIGHT/3);
+		online = new Button("ONLINE", GamePanel.WIDTH/2, GamePanel.HEIGHT/3);
+		host = new Button("HOST", GamePanel.WIDTH/2, GamePanel.HEIGHT/3);
+		connect = new Button("CONNECT", GamePanel.WIDTH/2, GamePanel.HEIGHT/2);
+		hostok = new Button("Œ ", GamePanel.WIDTH/2, GamePanel.HEIGHT/1.5);
+		connectok = new Button("Œ ", GamePanel.WIDTH/2, GamePanel.HEIGHT/1.5);
+		
+		hostp = new TextField("œŒ–“:", GamePanel.WIDTH/2, GamePanel.HEIGHT/2, 6, TextField.SYM.DIGITS);
 		
 		charge = new ShopButton("«¿–ﬂƒ ¿", 20, GamePanel.WIDTH/4, GamePanel.HEIGHT/6);
 		
@@ -41,6 +61,20 @@ public class Menu {
 	
 	void update() {
 		if(s.equals(Stat.MAIN)) {
+			if(play.update())
+				s = Stat.PLAY;
+			
+			if(online.update())
+				s = Stat.ONLINE;
+			
+			if(shop.update())
+				s = Stat.SHOP;
+		} else if(s.equals(Stat.SHOP)) {
+			if(back.update())
+				s = Stat.MAIN;
+			
+			charge.update();
+		} else if(s.equals(Stat.PLAY)) {
 			if(swave.update()) {
 				GamePanel.ek = 0;
 				GamePanel.b = new ArrayList<Bullet>();
@@ -50,30 +84,45 @@ public class Menu {
 				GamePanel.s = GamePanel.Stat.GAME;
 			}
 			
-			if(shop.update())
-				s = Stat.SHOP;
-			
 			if(bosses.update())
 				s = Stat.BOSSES;
-				
-		} else if(s.equals(Stat.SHOP)) {
+			
 			if(back.update())
 				s = Stat.MAIN;
+		} else if(s.equals(Stat.ONLINE)) {
+			if(host.update())
+				s = Stat.HOST;
 			
-			charge.update();
+			if(connect.update())
+				s = Stat.CONNECT;
+			
+			if(back.update())
+				s = Stat.MAIN;
+		} else if(s.equals(Stat.HOST)) {
+			hostp.update();
+			
+			if(hostok.update())
+				Online.host(Integer.parseInt(hostp.text));
+			
+			if(back.update())
+				s = Stat.ONLINE;
+		} else if(s.equals(Stat.CONNECT)) {
+			if(back.update())
+				s = Stat.ONLINE;
 		} else if(s.equals(Stat.BOSSES)) {
 			if(back.update())
-				s = Stat.MAIN;
+				s = Stat.PLAY;
 		}
 		
+		TextField.nt = "";
 		GamePanel.click = false;
 	}
 	
 	void draw(Graphics2D g) {
 		if(s.equals(Stat.MAIN)) {
-			swave.draw(g);
+			play.draw(g);
+			online.draw(g);
 			shop.draw(g);
-			bosses.draw(g);
 	
 			g.setFont(new Font("Consolas", Font.BOLD, 30));
 			g.setColor(new Color(255, 255, 255));
@@ -93,6 +142,19 @@ public class Menu {
 			g.setColor(new Color(255, 255, 255));
 			int lengthsscore = (int)g.getFontMetrics().getStringBounds(sscore+score, g).getWidth();
 			g.drawString(sscore+score, GamePanel.WIDTH/2 - lengthsscore/2, 40);
+		} else if(s.equals(Stat.PLAY)) {
+			swave.draw(g);
+			bosses.draw(g);
+			back.draw(g);
+		} else if(s.equals(Stat.ONLINE)) {
+			host.draw(g);
+			connect.draw(g);
+			back.draw(g);
+		} else if(s.equals(Stat.HOST)) {
+			hostp.draw(g);
+			back.draw(g);
+		} else if(s.equals(Stat.CONNECT)) {
+			back.draw(g);
 		} else if(s.equals(Stat.BOSSES)) {
 			back.draw(g);
 		}

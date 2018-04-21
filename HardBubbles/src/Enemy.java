@@ -1,5 +1,9 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 
 public class Enemy {
 	
@@ -10,6 +14,8 @@ public class Enemy {
 	double speed;
 	double rdx;
 	double rdy;
+	
+	BufferedImage bi;
 	
 	public Enemy(int mass) {
 		this.mass = mass;
@@ -121,7 +127,12 @@ public class Enemy {
 	}
 	
 	void draw(Graphics2D g) {
-		g.setColor(new Color(0, 255, 0));
-		g.fillOval((int)x-(int)r, (int)y-(int)r, (int)r*2, (int)r*2);
+		try{bi = (BufferedImage)ImageIO.read(new File("images/enemy.png"));}catch(Exception e){}
+		if(bi != null)
+			g.drawImage(bi, (int)(x-r), (int)(y-r), (int)r*2, (int)r*2, null);
+		else {
+			g.setColor(new Color(0, 255, 0));
+			g.fillOval((int)x-(int)r, (int)y-(int)r, (int)r*2, (int)r*2);
+		}
 	}
 }

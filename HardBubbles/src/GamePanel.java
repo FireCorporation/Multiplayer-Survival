@@ -88,7 +88,7 @@ public class GamePanel extends JPanel implements Runnable{
 			} else if(s.equals(Stat.MENU)) {
 				bg.draw(g);
 				menu.update();
-				if(Menu.s.equals(Menu.Stat.MAIN))
+				if(!Menu.s.equals(Menu.Stat.SHOP))
 					draw();
 				menu.draw(g);
 				display();

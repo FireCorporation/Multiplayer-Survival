@@ -28,6 +28,13 @@ public class Listener implements KeyListener, MouseMotionListener, MouseListener
 		
 		if(e.getKeyCode() == KeyEvent.VK_A)
 			Player.left = true;
+		
+		String t = String.valueOf(e.getKeyChar());
+		if(!t.equals("-"))
+			TextField.nt += t;
+		
+		if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+			TextField.nt = "-";
 	}
 
 	public void keyReleased(KeyEvent e) {

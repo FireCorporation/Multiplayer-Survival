@@ -1,5 +1,9 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 
 public class Bullet {
 	
@@ -10,6 +14,8 @@ public class Bullet {
 	double rdy;
 	int rSpeed;
 	
+	BufferedImage bi;
+	
 	public Bullet() {
 		x = Player.x;
 		y = Player.y;
@@ -17,6 +23,8 @@ public class Bullet {
 		r = 2;
 		
 		rSpeed = 15;
+		
+		try{bi = ImageIO.read(new File("images/bullet.png"));}catch(Exception e){}
 		
 		double distX = GamePanel.mouseX - Player.x;
 		double distY = GamePanel.mouseY - Player.y;
@@ -57,7 +65,11 @@ public class Bullet {
 	}
 	
 	void draw(Graphics2D g) {
-		g.setColor(new Color(255, 255, 255));
-		g.fillOval((int)x-r, (int)y-r, r*2, r*2);
+		if(bi != null)
+			g.drawImage(bi, (int)x-r, (int)y-r, r*2, r*2, null);
+		else {
+			g.setColor(new Color(255, 255, 255));
+			g.fillOval((int)x-r, (int)y-r, r*2, r*2);
+		}
 	}
 }

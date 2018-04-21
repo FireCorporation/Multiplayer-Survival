@@ -2,7 +2,11 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.Serializable;
+
+import javax.imageio.ImageIO;
 
 public class ShopButton implements Serializable	{
 	
@@ -16,6 +20,8 @@ public class ShopButton implements Serializable	{
 	int cost;
 	String scost;
 	String slevel;
+	BufferedImage bic, bis, big;
+	boolean selected;
 	
 	public ShopButton(String name, int cost, double x, double y) {
 		width = 120;
@@ -23,6 +29,13 @@ public class ShopButton implements Serializable	{
 		scost = "÷≈Õ¿ - ";
 		slevel = " LV.";
 		level = 1;
+		selected = false;
+		
+		try {
+			bic = ImageIO.read(new File("images/button/classic.png"));
+			bis = ImageIO.read(new File("images/button/selected.png"));
+			big = ImageIO.read(new File("images/button/gold.png"));
+		}catch(Exception e) {}
 		
 		this.x = x;
 		this.y = y;
@@ -48,18 +61,32 @@ public class ShopButton implements Serializable	{
 	}
 	
 	void draw(Graphics2D g) {
-		Color c;
-		if(level == 10)
-			c = new Color(255, 255, 0);
-		else if(Menu.score < cost)
-			c = new Color(127, 127, 127);
-		else
-			c =  new Color(255, 255, 255);
-		
-		g.setColor(c);
-		g.setStroke(new BasicStroke(3));
-		g.drawRect((int)x-width/2, (int)y-height/2, width, height);
+		if(bic != null && bis != null && big != null) {
+			if(level == 10)
+				g.drawImage(big, (int)x-width/2, (int)y-height/2, width, height, null);
+			else if(!selected)
+				g.drawImage(bic, (int)x-width/2, (int)y-height/2, width, height, null);
+			else
+				g.drawImage(bis, (int)x-width/2, (int)y-height/2, width, height, null);
+		} else {
+			Color c;
+			if(level == 10)
+				c = new Color(255, 255, 0);
+			else if(Menu.score < cost)
+				c = new Color(127, 127, 127);
+			else
+				c =  new Color(255, 255, 255);
+			
+			g.setColor(c);
+			g.setStroke(new BasicStroke(3));
+			g.drawRect((int)x-width/2, (int)y-height/2, width, height);
+			
+			g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), this.g));
+			g.fillRect((int)x-width/2, (int)y-height/2, width, height);
+		}
+
 		if(level != 10) {
+			g.setColor(new Color(255, 255, 255));
 			g.setFont(new Font("Consolas", Font.BOLD, 20));
 			int lengthname = (int)g.getFontMetrics().getStringBounds(name, g).getWidth();
 			g.setFont(new Font("Consolas", Font.BOLD, 10));
@@ -73,12 +100,10 @@ public class ShopButton implements Serializable	{
 			int lengthscost = (int)g.getFontMetrics().getStringBounds(scost+cost, g).getWidth();
 			g.drawString(scost+cost, (int)x-lengthscost/2, (int)y+18);
 		} else {
-			g.setColor(c);
+			g.setColor(new Color(255, 255, 0));
 			g.setFont(new Font("Consolas", Font.BOLD, 25));
 			int length = (int)g.getFontMetrics().getStringBounds(name, g).getWidth();
 			g.drawString(name, (int)x-length/2, (int)y+10);
 		}
-		g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), this.g));
-		g.fillRect((int)x-width/2, (int)y-height/2, width, height);
 	}
 }
