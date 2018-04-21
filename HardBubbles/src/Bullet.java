@@ -65,11 +65,6 @@ public class Bullet {
 	}
 	
 	void draw(Graphics2D g) {
-		if(bi != null)
-			g.drawImage(bi, (int)x-r, (int)y-r, r*2, r*2, null);
-		else {
-			g.setColor(new Color(255, 255, 255));
-			g.fillOval((int)x-r, (int)y-r, r*2, r*2);
-		}
+		g.drawImage(bi, (int)x-r, (int)y-r, r*2, r*2, null);
 	}
 }

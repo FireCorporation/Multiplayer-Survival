@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,11 +13,6 @@ public class Background {
 	}
 	
 	public void draw(Graphics2D g) {
-		if(bi != null)
-			g.drawImage(bi, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
-		else {
-			g.setColor(new Color(0, 0, 255));
-			g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
-		}
+		g.drawImage(bi, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
 	}
 }

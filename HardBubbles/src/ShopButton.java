@@ -1,4 +1,3 @@
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -15,12 +14,11 @@ public class ShopButton implements Serializable	{
 	String name;
 	int width;
 	int height;
-	int g;
 	int level;
 	int cost;
 	String scost;
 	String slevel;
-	BufferedImage bic, bis, big;
+	BufferedImage bic, bis, bil, big;
 	boolean selected;
 	
 	public ShopButton(String name, int cost, double x, double y) {
@@ -34,6 +32,7 @@ public class ShopButton implements Serializable	{
 		try {
 			bic = ImageIO.read(new File("images/button/classic.png"));
 			bis = ImageIO.read(new File("images/button/selected.png"));
+			bil = ImageIO.read(new File("images/button/locked.png"));
 			big = ImageIO.read(new File("images/button/gold.png"));
 		}catch(Exception e) {}
 		
@@ -41,13 +40,11 @@ public class ShopButton implements Serializable	{
 		this.y = y;
 		this.name = name;
 		this.cost = cost;
-		
-		g = 0;
 	}
 	
 	void update() {
 		if(GamePanel.mouseX >= x-width/2 && GamePanel.mouseX <= x+width/2 && GamePanel.mouseY >= y-height/2 && GamePanel.mouseY <= y+height/2) {
-			g = 70;
+			selected = true;
 			if(GamePanel.click) {
 				GamePanel.click = false;
 				if(level < 10 && Menu.score >= cost) {
@@ -57,33 +54,18 @@ public class ShopButton implements Serializable	{
 				}
 			}
 		} else
-			g = 0;
+			selected = false;
 	}
 	
 	void draw(Graphics2D g) {
-		if(bic != null && bis != null && big != null) {
-			if(level == 10)
-				g.drawImage(big, (int)x-width/2, (int)y-height/2, width, height, null);
-			else if(!selected)
-				g.drawImage(bic, (int)x-width/2, (int)y-height/2, width, height, null);
-			else
-				g.drawImage(bis, (int)x-width/2, (int)y-height/2, width, height, null);
-		} else {
-			Color c;
-			if(level == 10)
-				c = new Color(255, 255, 0);
-			else if(Menu.score < cost)
-				c = new Color(127, 127, 127);
-			else
-				c =  new Color(255, 255, 255);
-			
-			g.setColor(c);
-			g.setStroke(new BasicStroke(3));
-			g.drawRect((int)x-width/2, (int)y-height/2, width, height);
-			
-			g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), this.g));
-			g.fillRect((int)x-width/2, (int)y-height/2, width, height);
-		}
+		if(level == 10)
+			g.drawImage(big, (int)x-width/2, (int)y-height/2, width, height, null);
+		else if(Menu.score < cost)
+			g.drawImage(bil, (int)x-width/2, (int)y-height/2, width, height, null);
+		else if(!selected)
+			g.drawImage(bic, (int)x-width/2, (int)y-height/2, width, height, null);
+		else
+			g.drawImage(bis, (int)x-width/2, (int)y-height/2, width, height, null);
 
 		if(level != 10) {
 			g.setColor(new Color(255, 255, 255));

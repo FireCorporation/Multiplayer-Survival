@@ -2,8 +2,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -65,6 +67,8 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		b = new ArrayList<Bullet>();
 		en = new ArrayList<Enemy>();
+		
+		try{Enemy.bi = (BufferedImage)ImageIO.read(new File("images/enemy.png"));}catch(Exception e){}
 		
 		menu = new Menu();
 		

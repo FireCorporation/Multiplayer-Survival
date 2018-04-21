@@ -1,4 +1,3 @@
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -14,7 +13,6 @@ public class Button {
 	String name;
 	int width;
 	int height;
-	int g;
 	boolean selected;
 	BufferedImage bic, bis;
 	
@@ -31,8 +29,6 @@ public class Button {
 		this.x = x;
 		this.y = y;
 		this.name = name;
-		
-		g = 0;
 	}
 	
 	boolean update() {
@@ -48,18 +44,10 @@ public class Button {
 	}
 	
 	void draw(Graphics2D g) {
-		if(bic != null && bis != null) {
-			if(!selected)
-				g.drawImage(bic, (int)x-width/2, (int)y-height/2, width, height, null);
-			else
-				g.drawImage(bis, (int)x-width/2, (int)y-height/2, width, height, null);
-		} else {
-			g.setColor(new Color(255, 255, 255));
-			g.setStroke(new BasicStroke(3));
-			g.drawRect((int)x-width/2, (int)y-height/2, width, height);
-			g.setColor(new Color(255, 255, 255, this.g));
-			g.fillRect((int)x-width/2, (int)y-height/2, width, height);
-		}
+		if(!selected)
+			g.drawImage(bic, (int)x-width/2, (int)y-height/2, width, height, null);
+		else
+			g.drawImage(bis, (int)x-width/2, (int)y-height/2, width, height, null);
 		
 		g.setColor(new Color(255, 255, 255));
 		g.setFont(new Font("Consolas", Font.BOLD, 20));
